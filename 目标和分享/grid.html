@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Grid布局</title>
+</head>
+
+<!-- 常用属性 -->
+
+<!-- 
+  容器属性
+
+  display: grid;
+  display: inline-grid
+
+  设置列
+  grid-template-columns: 100px 100px;  固定宽度的两列
+  grid-template-columns: 100px auto;  一列固定 另一列自适应
+  grid-template-columns: repeat(6, 1fr);  设置6列，自适应宽度
+
+  设置行
+  grid-template-rows: 100px 100px 100px;
+
+  设置间隔
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  grid-gap: <grid-row-gap> <grid-column-gap>;  合并简写
+
+  整个内容区域在容器里面的水平/垂直位置
+  justify-content: start | end | center | stretch | space-around | space-between | space-evenly;
+  align-content: start | end | center | stretch | space-around | space-between | space-evenly;
+  place-content: <align-content> <justify-content>; // align-content属性和justify-content属性的合并简写
+ 
+  项目内容在单元格中的水平/垂直位置
+  justify-items: start | end | center | stretch;
+  align-items: start | end | center | stretch;
+  place-items: start | end | center | stretch;
+
+  repeat()/minmax()函数 和 auto-fill/auto/fr关键字
+
+  grid-template-columns: repeat(3, 100px); // 3列， 每列100px
+  grid-template-columns: repeat(auto-fill, 100px); // 自适应列数， 每列100px
+  grid-template-columns: repeat(3, 1fr); // 3列，每列等宽，且自适应宽度
+
+  grid-template-columns: 100px 1fr 2fr; // 第一列100px，剩余空间 1 : 2 分配给第二第三列
+  grid-template-columns: 100px auto; // 第一列100px，第二列自适应剩余空间
+
+  grid-template-columns: 1fr 1fr minmax(200px, 2fr); // 前两列 1 等宽 ，最后一列最小 200px ，正常情况下是前一列的 2 倍
+  grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4]; // [c1] 为网格线名
+
+
+  有时候，一些项目的指定位置，在现有网格的外部。比如网格只有3列，但是某一个项目指定在第5行。这时，浏览器会自动生成多余的网格，以便放置项目。
+  grid-auto-columns: 50px 50px 50px; // 超出所定义网格行的列宽
+  grid-auto-rows: 50px 50px 50px; // 超出所定义网格行的行高
+  grid-auto-flow // 容器的子元素会排列顺序: row"先行后列"、 column"先列后行"、 row dense 和 column dense
+  -->
+
+  <!-- 
+    项目属性
+    项目属性必须设置在项目上。
+    项目的位置是可以指定的，具体方法就是指定项目的四个边框，分别定位在哪根网格线。
+
+    grid-column-start: 1;  // 左边框所在的垂直网格线
+    grid-column-end: 2;    // 右边框所在的垂直网格线
+    grid-row-start: 1;     // 上边框所在的水平网格线
+    grid-row-end: 2;       // 下边框所在的水平网格线
+    grid-column: 1 / 2;    // grid-column-start和grid-column-end的合并简写形式 也可以结合网格线和span关键字
+    grid-row:1 / 2;        // grid-row-start属性和grid-row-end的合并简写形式 也可以结合网格线和span关键字
+    grid-area: a           // 指定项目放在哪一个区域  由容器上的grid-template-area划分区域
+
+    justify-self: start | end | center | stretch; // 设置单元格内容的水平位置
+    align-self: start | end | center | stretch; // 设置单元格内容的垂直位置
+    place-self: <align-self> <justify-self>; // align-self属性和justify-self属性的合并简写形
+   -->
+
+<style>
+  html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+    background-color: antiquewhite;  
+  }
+
+  /* 两栏布局，左侧固定，右侧自适应 */
+  .div1 {
+    display: grid;
+    grid-template-columns: 100px auto;
+    height: 300px;   /* 设置高度 */ 
+  }
+  aside {
+    background-color: aqua;
+  }
+  main {
+    background-color: red;
+  }
+
+  /* 六网格布局 */
+  .div2 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: 100px;
+  }
+  .div2 div {
+    border: 1px solid #eeeeee;
+    background-color: #fff;
+  }
+
+  /* 水平垂直居中 */
+  .div3 {
+    height: 100px;
+    background-color: aqua;
+
+    /* 使用grid */
+    display: grid;
+    place-content: center;
+
+    /* 使用flex布局实现垂直水平居中 */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  }
+  .div3 div {
+    border: 1px solid #eee;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+  }
+
+  /* 自适应两端对齐 */
+  .div4 {
+    background-color: red;
+
+    display: grid;
+    /* 宽度不固定 */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+    gap: 30px;
+
+    /* 宽度固定 */
+    /* grid-template-columns: repeat(auto-fill, 100px);
+    justify-content: space-between;
+    gap: 10px; */
+  }
+  .div4 div {
+    border: 1px solid #eee;
+    background-color: green;
+
+     /* 宽度固定 */
+    /* width: 100px;
+    height: 100px; */
+  }
+
+  /* 限定列宽的表格  */
+  /* 第三列正常是前两列之和，最小是 200px */
+  .div5 {
+    background-color: #fff;
+    height: 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr minmax(200px, 2fr)
+  }
+  .div5 div {
+    border: 1px solid #eee;
+  }
+
+  /* 圣杯布局 */
+  .div6 {
+    background-color: aqua;
+    display: grid;
+    grid-template-columns: 150px auto 150px;
+    grid-gap: 1em;
+  }
+  .div6 header, footer {
+    grid-column: 1 / 4
+  }
+  .div6 header, aside, article, footer {
+    background-color: azure;
+    height: 17vh;
+    display: grid;
+    place-content: center;
+  }
+
+  /* 基于网格线布局 */
+  .div7 {
+    display: grid;
+    height: 400px;
+    grid-gap: 10px;
+    /* 固定宽度 100px */
+    /* grid-template-columns: 100px 100px 100px; */
+    
+    /* 自适应宽度 */
+    grid-template-columns: repeat(3, 1fr); 
+  }
+  .box {
+    background-color: red;
+    border: 1px solid #eee;
+  }
+  .a {
+    grid-column: 1 / 3;
+    grid-row: 1;
+  }
+  .b {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    
+  }
+  .c {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .d {
+    grid-column: 2;
+    grid-row: 2;
+  }
+</style>
+
+<body>
+  <div class="content">
+    <!-- 两栏布局，左侧固定，右侧自适应  -->
+    <div class="div1">
+      <aside></aside>
+      <main></main>
+    </div>
+    
+    <!-- 六网格布局  -->
+    <div class="div2">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+    </div>
+
+    <!-- 水平垂直居中 -->
+    <div class="div3">
+      <div>水平垂直居中</div>
+    </div>
+
+    <!-- 自适应两端对齐 -->
+    <div class="div4">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+    </div>
+  </div>
+
+  <!-- 限定列宽的表格 -->
+  <div class="div5">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+  </div>
+
+  <!-- 圣杯布局 -->
+  <div class="div6">
+    <header>Header</header>
+    <aside>Left Slider</aside>
+    <article>Article</article>
+    <aside>Right Slider</aside>
+    <footer>Footer</footer>
+  </div>
+
+  <!-- 基于网格线布局 -->
+  <div class="div7">
+    <div class="box a">A</div>
+    <div class="box b">B</div>
+    <div class="box c">C</div>
+    <div class="box d">D</div>
+  </div>
+
+</body>
+
+</html>
