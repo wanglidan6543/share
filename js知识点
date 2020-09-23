@@ -1,0 +1,32 @@
+1. 如何修改node_modules 里的文件
+https://mp.weixin.qq.com/s/JJbK36Bf_7aaxdmRjfj6JA
+
+2. React/Vue 之类的框架为什么需要给组件添加key属性，其作用是什么？
+
+3. 这类框架为什么要做虚拟dom机制？
+
+3. 如何判断当前代码是运行在浏览器还是node.js 环境中？
+
+通过判断Global对象类型是否为window，如果不为window，则当前脚本运行在node.js环境中。
+
+4. SourceMap是什么？有什么作用？生产环境应该怎么用?
+
+5. webpack的热更新原理
+
+6. 什么是消息队列，宏任务，微任务？
+
+https://www.cnblogs.com/itgezhu/p/13259966.html
+https://www.cnblogs.com/Renyi-Fan/p/12521764.html
+
+7. ES6--ES11 的特性
+https://cloud.tencent.com/developer/article/1602432
+
+8. 支付宝小程序
+
+9. 移动开发平台mPaaS
+
+10. 函数式编程
+
+11. CSS变量
+https://mp.weixin.qq.com/s/whtfxJFea-mel00Cw3fZ5g
+https://mp.weixin.qq.com/s/Z1wjwkcsYrkz-m6ZCH6XNA

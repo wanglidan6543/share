@@ -1,0 +1,10 @@
+小程序中引入 eslint 检查
+
+文章：https://zhuanlan.zhihu.com/p/84283104
+https://www.cnblogs.com/DevinnZ/articles/11132848.html
+
+1. 执行 npm init  
+    生成package.json
+2. 安装 eslint
+    npm install eslint --save-dev
+

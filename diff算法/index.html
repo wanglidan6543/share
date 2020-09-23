@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>虚拟dom</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script type="text/javascript" src="diff.js"></script>
+<script type="text/javascript" src="patch.js"></script>
+<script type="text/javascript">
+    //虚拟dom的类
+    class Element {
+        constructor(type, props, children) {
+            this.type = type;
+            this.props = props;
+            this.children = children;
+        }
+    }
+
+    //返回虚拟节点
+    function createElement(type, props, children) {
+        return new Element(type, props, children)
+    }
+
+    //设置属性
+    function setAttr(node, key, value) {
+        switch (key) {
+            case 'value': //node是一个输入框
+                if (node.tagName.toUpperCase() === 'INPUT' || node.tagName.toUpperCase() === "TEXTAREA") {
+                    node.value = value;
+                } else {
+                    node.setAttribute(key, value);
+                }
+                break;
+
+            case 'style':
+                node.style.cssText = value;
+                break;
+
+            default:
+                node.setAttribute(key, value)
+                break;
+        }
+    }
+
+    //插入到页面
+    function renderDom(el, target) {
+        target.appendChild(el)
+    }
+
+    //转为节点dom
+    function render(eleObj) {
+        let el = document.createElement(eleObj.type);
+        for (let key in eleObj.props) {
+            //设置属性的方法
+            setAttr(el, key, eleObj.props[key])
+        }
+
+        //有子节点
+        eleObj.children.forEach(child => {
+            child = (child instanceof Element) ? render(child) : document.createTextNode(child);
+            el.appendChild(child)
+        })
+        return el
+    }
+
+    //-----------------------------------------
+    //虚拟dom
+    let vertualDom = createElement('ul', { class: 'list' }, [
+        createElement('li', { class: 'item' }, ['a']),
+        createElement('li', { class: 'item' }, ['b']),
+        createElement('li', { class: 'item' }, ['c'])
+    ])
+
+    let vertualDom1 = createElement('ul', { class: 'list' }, [
+        createElement('li', { class: 'item' }, ['b']),
+        createElement('li', { class: 'item' }, ['c'])
+    ])
+
+    //将虚拟dom转为真实dom渲染到页面
+    let el = render(vertualDom)
+    renderDom(el, document.getElementById('root'))
+
+    setTimeout(() => {
+        //修改的补丁
+        let patches = diff(vertualDom, vertualDom1)
+        console.log(JSON.stringify(patches, null, 2),'patches')
+        //重新更新视图
+        patch(el, patches)
+    }, 2000)
+
+
+
+    // {
+    //     tag: 'ul',
+    //     attrs:{
+    //         class: 'list',
+    //     },
+    //     children:[{
+
+    //     }]
+    // }
+
+</script>
+
+</html>

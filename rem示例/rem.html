@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1, user-scalable=no">
+    <title>基于淘宝rem做法</title>
+</head>
+<style>
+    html,body {
+        margin: 0;
+    }
+    .block {
+        margin-top: 1rem;
+        width: 100%;
+        height: 2rem;
+
+        display: flex;
+        justify-content: space-between;
+    }
+    .block .left {
+        margin-left: 0.266rem; 
+        width: 4.53rem;
+        height: 2rem;
+        background-color: red;
+    }
+    .block .right {
+        /* 基于视觉稿横屏尺寸/100得出的基准font-size 75px */
+        /* margin-left: 20px;  20/75=0.266 */
+        /* width: 340px */
+        margin-right: 0.266rem; 
+        width: 4.53rem;
+        height: 2rem;
+        background-color: green;
+    }
+    .text {
+        margin-top: 1rem;
+        width: 100%;
+        font-size: 1rem;
+        height: 1rem;
+        line-height: 1rem;
+    }
+</style>
+
+<script>
+    {
+        console.log(window.devicePixelRatio)
+        var scale = 1 / devicePixelRatio;
+        console.log(scale);
+        document.querySelector('meta[name="viewport"]')
+        .setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+    
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+        console.log(document.documentElement.clientWidth / 10);
+    }
+</script>
+<body>
+    <div class="block">
+        <div class="left"></div>
+        <div class="right"></div>
+    </div>
+    <div class="text">
+        这是一段文字红红火火恍恍惚惚
+    </div>
+</body>
+</html>
